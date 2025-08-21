@@ -23,5 +23,4 @@ jobs:
         with:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/c964-binder:latest
           BINDER_CACHE: true
