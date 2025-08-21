@@ -1,17 +1,27 @@
 name: Build Notebook Container
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
 
-    - name: checkout files in repo
-      uses: actions/checkout@master
+      # Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: update jupyter dependencies with repo2docker
-      uses: machine-learning-apps/repo2docker-action@master
-      with:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        BINDER_CACHE: true
-        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      # Configure git for pushing the cache Dockerfile
+      - name: Configure git for pushing
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+
+      # Build Docker image and enable Binder cache
+      - name: Build and push Binder image
+        uses: machine-learning-apps/repo2docker-action@master
+        with:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/c964-binder:latest
+          BINDER_CACHE: true
