@@ -9,6 +9,8 @@ jobs:
       # Checkout the repo
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       # Configure git for pushing the cache Dockerfile
       - name: Configure git for pushing
