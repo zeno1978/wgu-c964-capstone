@@ -1,9 +1,10 @@
 name: Build Notebook Container
-on: [push]
-
+on:
+  push:
+    paths-ignore:
+      - 'binder/**'
 jobs:
   build:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
 
